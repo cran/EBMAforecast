@@ -1,0 +1,75 @@
+\name{compareModels}
+\alias{CompareModels-class}
+\alias{compareModels}
+\alias{compareModels,ForecastData-method}
+\title{Function for comparing multiple models based on predictive performance}
+\arguments{
+  \item{.forecastData}{An object of class 'ForecastData'.}
+
+  \item{.period}{Can take value of "calibration" or "test"
+  and indicates period for which statistics should be
+  calculated.}
+
+  \item{.fitStatistics}{A vector naming statistics that
+  should be calculated.  Possible values include "auc",
+  "brier", "percCorrect", "pre".}
+
+  \item{.threshold}{The threshold used to calculate when a
+  "positive" prediction is made by the model.}
+
+  \item{.baseModel}{Vector containing predictions used to
+  calculate proportional reduction of error ("pre").}
+
+  \item{...}{Not implemented}
+}
+\value{
+  A data object of the class 'CompareModels' with the
+  following slots: \item{fitStatistics}{The output of the
+  fit statistics for each model} \item{period}{The period,
+  "calibration" or "test", for which the statistics were
+  calculated} \item{threshold}{The threshold used to
+  calculate when a "positive" prediction is made by the
+  model.} \item{baseModel}{Vector containing predictions
+  used to calculate proportional reduction of error
+  ("pre").}
+}
+\description{
+  This function produces statistics to compare the
+  predictive performance of the different models in
+  included as well as for the EBMA model for either the
+  calibration or the test period. It currently calculates
+  the area under the ROC (\code{auc}), the \code{brier}
+  score, the percent of observations predicted correctly
+  (\code{percCorrect}), as well as the proportional
+  reduction in error compared to some baseline model
+  (\code{pre}).
+}
+\examples{
+data(calibrationSample)
+
+data(testSample)
+
+this.ForecastData <- makeForecastData(.predCalibration=calibrationSample[,c("LMER", "SAE", "GLM")],
+.outcomeCalibration=calibrationSample[,"Insurgency"],.predTest=testSample[,c("LMER", "SAE", "GLM")],
+.outcomeTest=testSample[,"Insurgency"], .modelNames=c("LMER", "SAE", "GLM"))
+
+this.ensemble <- calibrateEnsemble(this.ForecastData, model="logit", tol=0.0001, maxIter=25000, exp=3)
+
+compareModels(this.ensemble,"calibration")
+
+compareModels(this.ensemble,"test")
+}
+\author{
+  Michael D. Ward <\email{michael.d.ward@duke.edu}> and
+  Jacob M. Montgomery <\email{jacob.montgomery@wustl.edu}>
+}
+\references{
+  Montgomery, Jacob M., Florian M. Hollenbach and Michael
+  D. Ward. (2012). Improving Predictions Using Ensemble
+  Bayesian Model Averaging. \emph{Political Analysis}.
+  Forthcoming.
+}
+\seealso{
+  ensembleBMA, other functions
+}
+
