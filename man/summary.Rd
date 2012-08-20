@@ -4,25 +4,33 @@
 \alias{show,SummaryForecastData-method}
 \alias{summary}
 \alias{summary,FDatFitLogit-method}
+\alias{summary,FDatFitNormal-method}
 \title{Summary Function}
 \arguments{
-  \item{object}{An object of class "FDatFitLogit"}
+  \item{object}{An object of the subclass "FDatFitLogit" or
+  "FDatFitNormal"}
 
   \item{period}{The period for which the summary should be
   provided, either "calibration" or "test".}
 
   \item{fitStatistics}{A vector naming statistics that
-  should be calculated.  Possible values include "auc",
-  "brier", "percCorrect", "pre".}
+  should be calculated.  Possible values for objects in the
+  "FDatFitLogit" subclass include "auc", "brier",
+  "percCorrect", "pre". Possible values for objects in the
+  "FDatFitNormal" subclass include "rmse" and "mae."
+  Additional metrics will be made available in a future
+  release of this package.}
 
   \item{threshold}{The threshold used to calculate when a
-  "positive" prediction is made by the model.}
+  "positive" prediction is made for a model.  Not used for
+  objects of the "FDatFitNormal" subclass.}
 
-  \item{baseModel}{Vector containing predictions used to
-  calculate proportional reduction of error ("pre").}
+  \item{baseModel}{A vector containing predictions used to
+  calculate proportional reduction of error ("pre"). Not
+  used for objects of the "FDatFitNormal" subclass.}
 
   \item{showCoefs}{A logical indicating whether model
-  ceofficients from the ensemble should be shown.}
+  coefficients from the ensemble should be shown.}
 
   \item{...}{Not implemented}
 }
@@ -32,19 +40,20 @@
   the function produces a matrix containing one row for
   each model plus one row for the EBMA forecast.  The first
   column is always the model weights assigned to the
-  component models.  The second and third columns are for
+  component models.  The second and third columns display
   the model parameters for the transformation of the
   component models.  The remaining columns are the
   requested fit statistics for all models, as calculated by
   the \code{copareModels} function.  If
-  \code{showCoefs=TRUE}, then those columns will be
-  excluded. }
+  \code{showCoefs=FALSE}, then the model parameters will
+  not be shown.}
 }
 \description{
   This function summarizes the Ensemble models that have
   been fit previously by the user.
 }
 \examples{
+\dontrun{
 data(calibrationSample)
 
 data(testSample)
@@ -53,11 +62,12 @@ this.ForecastData <- makeForecastData(.predCalibration=calibrationSample[,c("LME
 .outcomeCalibration=calibrationSample[,"Insurgency"],.predTest=testSample[,c("LMER", "SAE", "GLM")],
 .outcomeTest=testSample[,"Insurgency"], .modelNames=c("LMER", "SAE", "GLM"))
 
-this.ensemble <- calibrateEnsemble(this.ForecastData, model="logit", tol=0.0001, maxIter=25000, exp=3)
+this.ensemble <- calibrateEnsemble(this.ForecastData, model="logit", tol=0.001,exp=3)
 
 summary(this.ensemble, period="calibration")
 
 summary(this.ensemble, period="test",showCoefs=FALSE)
+}
 }
 \author{
   Michael D. Ward <\email{michael.d.ward@duke.edu}> and

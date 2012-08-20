@@ -1,0 +1,99 @@
+\name{ForecastData}
+\alias{ForecastData}
+\alias{ForecastData-class}
+\alias{getModelNames}
+\alias{getModelNames,ForecastData-method}
+\alias{getOutcomeCalibration}
+\alias{getOutcomeCalibration,ForecastData-method}
+\alias{getOutcomeTest}
+\alias{getOutcomeTest,ForecastData-method}
+\alias{getPredCalibration}
+\alias{getPredCalibration,ForecastData-method}
+\alias{getPredTest}
+\alias{getPredTest,ForecastData-method}
+\alias{initialize,ForecastData-method}
+\alias{makeForecastData,ANY-method}
+\alias{print,ForecastData-method}
+\alias{setModelNames,ForecastData-method}
+\alias{setModelNames<-}
+\alias{setModelNames<-,ForecastData-method}
+\alias{setOutcomeCalibration,ForecastData-method}
+\alias{setOutcomeCalibration<-}
+\alias{setOutcomeCalibration<-,ForecastData-method}
+\alias{setOutcomeTest,ForecastData-method}
+\alias{setOutcomeTest<-}
+\alias{setOutcomeTest<-,ForecastData-method}
+\alias{setPredCalibration,ForecastData-method}
+\alias{setPredCalibration<-}
+\alias{setPredCalibration<-,ForecastData-method}
+\alias{setPredTest,ForecastData-method}
+\alias{setPredTest<-}
+\alias{setPredTest<-,ForecastData-method}
+\alias{show,ForecastData-method}
+\title{An ensemble forecasting data object}
+\description{
+  Objects of class \code{ForecastData} are used in the
+  \code{calibrateEnsemble} function. Datasets should be
+  converted into an object of class \code{ForecastData}
+  using the \code{makeForecastData} function. Individual
+  slots of the \code{ForecastData} object can be accessed
+  and changed using the \code{get} and \code{set} functions
+  respectively. Missing observations in the prediction
+  calibration set are allowed.
+}
+\details{
+  A data object of the class 'ForecastData' has the
+  following slots: \itemize{ \item \code{predCalibration}
+  An array containing the predictions of all component
+  models for the observations in the calibration period.
+  \item \code{predTest} An array containing the predictions
+  of all component models for all the observations in the
+  test period. \item \code{outcomeCalibration} A vector
+  containing the true values of the dependent variable for
+  all observations in the calibration period. \item
+  \code{outcomeTest} A vector containing the true values of
+  the dependent variable for all observations in the test
+  period. \item \code{modelNames} A character vector
+  containing the names of all component models. }
+}
+\examples{
+\dontrun{
+data(calibrationSample)
+
+data(testSample)
+this.ForecastData <- makeForecastData(.predCalibration=calibrationSample[,c("LMER", "SAE", "GLM")],
+.outcomeCalibration=calibrationSample[,"Insurgency"],.predTest=testSample[,c("LMER", "SAE", "GLM")],
+.outcomeTest=testSample[,"Insurgency"], .modelNames=c("LMER", "SAE", "GLM"))
+
+### to acces individual slots in the ForecastData object
+getPredCalibration(this.ForecastData)
+getOutcomeCalibration(this.ForecastData)
+getPredTest(this.ForecastData)
+getOutcomeTest(this.ForecastData)
+getModelNames(this.ForecastData)
+
+### to assign individual slots, use set functions
+
+setPredCalibration(this.ForecastData)<-calibrationSample[,c("LMER", "SAE", "GLM")]
+setOutcomeCalibration(this.ForecastData)<-calibrationSample[,"Insurgency"]
+setPredTest(this.ForecastData)<-testSample[,c("LMER", "SAE", "GLM")]
+setOutcomeTest(this.ForecastData)<-testSample[,"Insurgency"]
+setModelNames(this.ForecastData)<-c("LMER", "SAE", "GLM")
+}
+}
+\author{
+  Michael D. Ward <\email{michael.d.ward@duke.edu}> and
+  Jacob M. Montgomery <\email{jacob.montgomery@wustl.edu}>
+  and Florian M. Hollenbach
+  <\email{florian.hollenbach@duke.edu}>
+}
+\references{
+  Montgomery, Jacob M., Florian M. Hollenbach and Michael
+  D. Ward. (2012). Improving Predictions Using Ensemble
+  Bayesian Model Averaging. \emph{Political Analysis}.
+  \bold{20}: 271-291.
+}
+\seealso{
+  ensembleBMA
+}
+

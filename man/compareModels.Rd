@@ -7,15 +7,17 @@
   \item{.forecastData}{An object of class 'ForecastData'.}
 
   \item{.period}{Can take value of "calibration" or "test"
-  and indicates period for which statistics should be
-  calculated.}
+  and indicates the period for which the test statistics
+  should be calculated.}
 
   \item{.fitStatistics}{A vector naming statistics that
   should be calculated.  Possible values include "auc",
-  "brier", "percCorrect", "pre".}
+  "brier", "percCorrect", "pre" for logit models and
+  "mae","rsme" for normal models.}
 
   \item{.threshold}{The threshold used to calculate when a
-  "positive" prediction is made by the model.}
+  "positive" prediction is made by the model for binary
+  dependent variables.}
 
   \item{.baseModel}{Vector containing predictions used to
   calculate proportional reduction of error ("pre").}
@@ -25,9 +27,9 @@
 \value{
   A data object of the class 'CompareModels' with the
   following slots: \item{fitStatistics}{The output of the
-  fit statistics for each model} \item{period}{The period,
+  fit statistics for each model.} \item{period}{The period,
   "calibration" or "test", for which the statistics were
-  calculated} \item{threshold}{The threshold used to
+  calculated.} \item{threshold}{The threshold used to
   calculate when a "positive" prediction is made by the
   model.} \item{baseModel}{Vector containing predictions
   used to calculate proportional reduction of error
@@ -35,16 +37,21 @@
 }
 \description{
   This function produces statistics to compare the
-  predictive performance of the different models in
-  included as well as for the EBMA model for either the
-  calibration or the test period. It currently calculates
-  the area under the ROC (\code{auc}), the \code{brier}
-  score, the percent of observations predicted correctly
-  (\code{percCorrect}), as well as the proportional
-  reduction in error compared to some baseline model
-  (\code{pre}).
+  predictive performance of the different models component
+  models, as well as for the EBMA model itself, for either
+  the calibration or the test period. It currently
+  calculates the area under the ROC (\code{auc}), the
+  \code{brier} score, the percent of observations predicted
+  correctly (\code{percCorrect}), as well as the
+  proportional reduction in error compared to some baseline
+  model (\code{pre}) for binary models. For models with
+  normally distributed outcomes the \code{CompareModels}
+  function can be used to calculate the root mean squared
+  error (\code{rmse}) as well as the mean absolute error
+  (\code{mae}).
 }
 \examples{
+\dontrun{
 data(calibrationSample)
 
 data(testSample)
@@ -53,11 +60,12 @@ this.ForecastData <- makeForecastData(.predCalibration=calibrationSample[,c("LME
 .outcomeCalibration=calibrationSample[,"Insurgency"],.predTest=testSample[,c("LMER", "SAE", "GLM")],
 .outcomeTest=testSample[,"Insurgency"], .modelNames=c("LMER", "SAE", "GLM"))
 
-this.ensemble <- calibrateEnsemble(this.ForecastData, model="logit", tol=0.0001, maxIter=25000, exp=3)
+this.ensemble <- calibrateEnsemble(this.ForecastData, model="logit", tol=0.001, exp=3)
 
 compareModels(this.ensemble,"calibration")
 
 compareModels(this.ensemble,"test")
+}
 }
 \author{
   Michael D. Ward <\email{michael.d.ward@duke.edu}> and
@@ -67,9 +75,9 @@ compareModels(this.ensemble,"test")
   Montgomery, Jacob M., Florian M. Hollenbach and Michael
   D. Ward. (2012). Improving Predictions Using Ensemble
   Bayesian Model Averaging. \emph{Political Analysis}.
-  Forthcoming.
+  \bold{20}: 271-291.
 }
 \seealso{
-  ensembleBMA, other functions
+  ensembleBMA
 }
 

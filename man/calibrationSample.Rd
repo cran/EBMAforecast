@@ -6,10 +6,10 @@
   This includes the calibration sample data for the
   insurgency forecasting example in Montgomery, Hollenbach
   and Ward (2012). It provides the predictions for the
-  three models included in the Ensemble models, as well as
+  three models included in the Ensemble model, as well as
   the true values of the dependent variable for insurgency
-  in 29 Asian countries. The calibration sample ranges
-  ranges from January 2008 to December 2009.
+  in 29 Asian countries. The calibration sample ranges from
+  January 2008 to December 2009.
 }
 \details{
   The variables included in the dataset are: \itemize{
@@ -39,7 +39,7 @@
   Montgomery, Jacob M., Florian M. Hollenbach and Michael
   D. Ward. (2012). Improving Predictions Using Ensemble
   Bayesian Model Averaging. \emph{Political Analysis}.
-  Forthcoming.
+  \bold{20}: 271-291.
 }
 \keyword{datasets}
 
