@@ -1,5 +1,6 @@
 exportClasses(CompareModels)
 exportClasses(FDatFitLogit)
+exportClasses(FDatFitNormal)
 exportClasses(ForecastData)
 exportClasses(ForecastDataLogit)
 exportClasses(ForecastDataNormal)

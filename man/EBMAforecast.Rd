@@ -12,21 +12,30 @@
   in-sample predictions, generate ensemble out-of-sample
   predictions, and create useful data visualizations.
   Currently, the package can only handle dichotomous
-  outcomes, although additional models will be added to the
-  package in the coming months.
+  outcomes or those with normally distributed errors,
+  although additional models will be added to the package
+  in the coming months. Missing observation are allowed in
+  the calibration set, but models with many predictions
+  missing are penalized.
 }
 \examples{
+\dontrun{
 demo(EBMAforecast)
+
+demo(presForecast)
+}
 }
 \author{
   Michael D. Ward <\email{michael.d.ward@duke.edu}> and
   Jacob M. Montgomery <\email{jacob.montgomery@wustl.edu}>
+  and Florian M. Hollenbach
+  <\email{florian.hollenbach@duke.edu}>
 }
 \references{
   Montgomery, Jacob M., Florian M. Hollenbach and Michael
   D. Ward. (2012). Improving Predictions Using Ensemble
-  Bayesian Model Averaging. \emph{Political Analysis}.
-  Forthcoming.
+  Bayesian Model Averaging.  \emph{Political Analysis}.
+  \bold{20}: 271-291.
 
   Raftery, A. E., T. Gneiting, F. Balabdaoui and M.
   Polakowski. (2005). Using Bayesian Model Averaging to
@@ -48,5 +57,11 @@ demo(EBMAforecast)
   Probabilistic wind speed forecasting using ensembles and
   Bayesian model averaging. \emph{Journal of the American
   Statistical Association}. \bold{105}:25--35.
+
+  Fraley, C., A. E. Raftery, and T. Gneiting. (2010).
+  Calibrating multimodel forecast ensembles with
+  exchangeable and missing members using Bayesian model
+  averaging. \emph{Monthly Weather Review}.
+  \bold{138}:190--202.
 }
 
