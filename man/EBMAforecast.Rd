@@ -57,11 +57,5 @@ demo(presForecast)
   Probabilistic wind speed forecasting using ensembles and
   Bayesian model averaging. \emph{Journal of the American
   Statistical Association}. \bold{105}:25--35.
-
-  Fraley, C., A. E. Raftery, and T. Gneiting. (2010).
-  Calibrating multimodel forecast ensembles with
-  exchangeable and missing members using Bayesian model
-  averaging. \emph{Monthly Weather Review}.
-  \bold{138}:190--202.
 }
 

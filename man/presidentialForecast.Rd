@@ -24,7 +24,7 @@
   (2008). \item\code{EWT2C2} Predictions from the model in
   Column 2 in Table 2 by Erickson and Wlezien (2008).
   \item\code{Actual} The true values of the dependent
-  variable, i.e. the incumbent-party voteshare in each
+  variable, i.e. the incumbent-party vote-share in each
   presidential election in the sample. }
 }
 \references{

@@ -15,11 +15,11 @@ setClass(Class="SummaryForecastData",
 #'
 #' This function summarizes the Ensemble models that have been fit previously by the user.
 #'
-#' @param object An object of the subclass "FDatFitLogit" or "FDatFitNormal"
+#' @param object An object of the subclass \code{FDatFitLogit} or \code{FDatFitNormal}
 #' @param period The period for which the summary should be provided, either "calibration" or "test".
-#' @param fitStatistics A vector naming statistics that should be calculated.  Possible values for objects in the "FDatFitLogit" subclass include "auc", "brier", "percCorrect", "pre". Possible values for objects in the "FDatFitNormal" subclass include "rmse" and "mae."  Additional metrics will be made available in a future release of this package.
-#' @param threshold The threshold used to calculate when a "positive" prediction is made for a model.  Not used for objects of the "FDatFitNormal" subclass.
-#' @param baseModel A vector containing predictions used to calculate proportional reduction of error ("pre"). Not used for objects of the "FDatFitNormal" subclass.
+#' @param fitStatistics A vector naming statistics that should be calculated.  Possible values for objects in the \code{FDatFitLogit} subclass include "auc", "brier", "percCorrect", "pre". Possible values for objects in the \code{FDatFitNormal} subclass include "rmse" and "mae."  Additional metrics will be made available in a future release of this package.
+#' @param threshold The threshold used to calculate when a "positive" prediction is made for a model.  Not used for objects of the \code{FDatFitNormal} subclass.
+#' @param baseModel A vector containing predictions used to calculate proportional reduction of error ("pre"). Not used for objects of the \code{FDatFitNormal} subclass.
 #' @param showCoefs A logical indicating whether model coefficients from the ensemble should be shown.
 #' @param ... Not implemented
 #' @method summary FDatFitLogit

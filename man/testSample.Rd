@@ -1,7 +1,7 @@
 \docType{data}
 \name{testSample}
 \alias{testSample}
-\title{Test sample data}
+\title{Exemplar test sample data}
 \description{
   This includes the test sample data for the insurgency
   forecasting example in Montgomery, Hollenbach and Ward
