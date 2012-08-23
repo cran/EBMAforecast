@@ -1,4 +1,4 @@
-#' Calibration sample data
+#' Exemplar calibration sample data
 #'
 #' This includes the calibration sample data for the insurgency forecasting example in Montgomery, Hollenbach and Ward (2012). It provides the predictions for the three models included in the Ensemble model, as well as the true values of the dependent variable for insurgency in 29 Asian countries. The calibration sample ranges from January 2008 to December 2009. 
 #'
@@ -16,7 +16,7 @@
 #' @docType data
 NULL
 
-#' Test sample data
+#' Exemplar test sample data
 #'
 #' This includes the test sample data for the insurgency forecasting example in Montgomery, Hollenbach and Ward (2012). It provides the predictions for the three models included in the Ensemble model, as well as the true values of the dependent variable for insurgency in 29 Asian countries. The test sample ranges ranges from January 2010 to December 2010.  
 #'
@@ -45,7 +45,7 @@ NULL
 #' \item\code{Fair} Forecasts from Fair's presidential vote share model (2010).  
 #' \item\code{Lewis-Beck/Tien} Predictions from the ``Jobs Model Forecast''	by Michael Lewis-Beck and Charles Tien (2008).   
 #' \item\code{EWT2C2} Predictions from the model in Column 2 in Table 2 by Erickson and Wlezien (2008). 
-#' \item\code{Actual} The true values of the dependent variable, i.e. the incumbent-party voteshare in each presidential election in the sample.
+#' \item\code{Actual} The true values of the dependent variable, i.e. the incumbent-party vote-share in each presidential election in the sample.
 #'} 
 #' @references Montgomery, Jacob M., Florian M. Hollenbach and Michael D. Ward. (2012). Improving Predictions Using Ensemble Bayesian Model Averaging.  \emph{Political Analysis}. \bold{20}: 271-291.
 #'
@@ -79,7 +79,6 @@ NULL
 #' @references Sloughter, J. M., A. E. Raftery, T. Gneiting and C. Fraley. (2007). Probabilistic quantitative precipitation forecasting using Bayesian model averaging. \emph{Monthly Weather Review}. \bold{135}:3209--3220.
 #' @references Fraley, C., A. E. Raftery, T. Gneiting. (2010). Calibrating Multi-Model Forecast Ensembles with Exchangeable and Missing Members using Bayesian Model Averaging. \emph{Monthly Weather Review}. \bold{138}:190--202.
 #' @references Sloughter, J. M., T. Gneiting and A. E. Raftery. (2010). Probabilistic wind speed forecasting using ensembles and Bayesian model averaging. \emph{Journal of the American Statistical Association}. \bold{105}:25--35.
-#' @references Fraley, C., A. E. Raftery, and T. Gneiting. (2010). Calibrating multimodel forecast ensembles with exchangeable and missing members using Bayesian model averaging. \emph{Monthly Weather Review}. \bold{138}:190--202.
 #' @examples 
 #'
 #' \dontrun{

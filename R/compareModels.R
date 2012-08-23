@@ -24,7 +24,7 @@ setClass(Class="CompareModels",
 #'
 #' This function produces statistics to compare the predictive performance of the different models component models, as well as for the EBMA model itself, for either the calibration or the test period. It currently calculates the area under the ROC (\code{auc}), the \code{brier} score, the percent of observations predicted correctly (\code{percCorrect}), as well as the proportional reduction in error compared to some baseline model (\code{pre}) for binary models. For models with normally distributed outcomes the \code{CompareModels} function can be used to calculate the root mean squared error (\code{rmse}) as well as the mean absolute error (\code{mae}).
 #'
-#' @param .forecastData An object of class 'ForecastData'. 
+#' @param .forecastData An object of class \code{ForecastData}. 
 #' @param .period Can take value of "calibration" or "test" and indicates the period for which the test statistics should be calculated.
 #' @param .fitStatistics A vector naming statistics that should be calculated.  Possible values include "auc", "brier", "percCorrect", "pre" for logit models and "mae","rsme" for normal models.
 #' @param .threshold The threshold used to calculate when a "positive" prediction is made by the model for binary dependent variables.

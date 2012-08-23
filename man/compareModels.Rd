@@ -4,7 +4,8 @@
 \alias{compareModels,ForecastData-method}
 \title{Function for comparing multiple models based on predictive performance}
 \arguments{
-  \item{.forecastData}{An object of class 'ForecastData'.}
+  \item{.forecastData}{An object of class
+  \code{ForecastData}.}
 
   \item{.period}{Can take value of "calibration" or "test"
   and indicates the period for which the test statistics

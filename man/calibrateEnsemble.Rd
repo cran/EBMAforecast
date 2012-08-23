@@ -8,28 +8,27 @@
 \alias{fitEnsemble}
 \alias{fitEnsemble,ForecastDataLogit-method}
 \alias{fitEnsemble,ForecastDataNormal-method}
-\title{Calibrate an ensemble Bayesian Model Averaging model
-HEAD
-This function calibrates an EBMA model based on out-of-sample performance in the calibration time period. Given a dependent variable and calibration-sample predictions from multiple component forecast models in the \code{ForecastData} the \code{calibrateEnsemble} function fits an ensemble BMA mixture model. The weights assigned to each model are derived from the individual model's performance in the calibration period. Missing observations are allowed in the calibration period, however models with missing observations are penalized. When missing observations are prevalent in the calibration set, the EM algorithm is adjusted and model paprameters are estimated by maximizing a renormalized partial expected complete-data log-likelihood (Fraley et al. 2010).
-helpfiles}
+\title{Calibrate an ensemble Bayesian Model Averaging model}
 \arguments{
-  \item{.forecastData}{An object of class 'ForecastData'
-  that will be used to calibrate the model.}
+  \item{.forecastData}{An object of class
+  \code{ForecastData} that will be used to calibrate the
+  model.}
 
-  \item{exp}{The exponential shrinkage term.  Forecasts are
-  raised to the (1/exp) power on the logit scale for the
-  purposes of bias reduction.  The default value is
-  \code{exp=3}.}
+  \item{exp}{The exponential shrinkage term.  When
+  \code{model="logit"}, forecasts are raised to the (1/exp)
+  power on the logit scale for the purposes of bias
+  reduction.  The default value is \code{exp=3}. When
+  \code{model="logit"}, forecasts are raised to the (1/exp)
+  and the default value is \code{exp=1}.}
 
   \item{tol}{Tolerance for improvements in the
   log-likelihood before the EM algorithm will stop
-  optimization.  The default is \code{tol= 0.01}, which is
-  somewhat high.  Researchers may wish to reduce this by an
-  order of magnitude for final model estimation.}
+  optimization.  The default is
+  \code{sqrt(.Machine$double.eps)}.}
 
   \item{maxIter}{The maximum number of iterations the EM
   algorithm will run before stopping automatically. The
-  default is \code{maxIter=10000}.}
+  default is \code{maxIter=1e6}.}
 
   \item{model}{The model type that should be used given the
   type of data that is being predicted (i.e., normal,
@@ -43,40 +42,44 @@ helpfiles}
   \code{posteriorMedian} or \code{posteriorMean}. Posterior
   median is the default.}
 
+  \item{useModelParams}{A logical that indicates whether
+  the regression parameters should be used to post-process
+  the data.  The default is TRUE.  We recommend setting
+  this to FALSE for sparse datasets or datasets modeling
+  rare events.}
+
   \item{...}{Not implemented}
 }
 \value{
-  Returns a data of class 'FDatFitLogit' or FDatFitNormal,
-  a subclass of 'ForecastData', with the following slots
-  \item{predCalibration}{A matrix containing the
+  Returns a data of class \code{FDatFitLogit} or
+  \code{FDatFitNormal}, a subclass of \code{ForecastData},
+  with the following slots \item{predCalibration}{An array
+  containing the predictions of all component models and
+  the EBMA model for all observations in the calibration
+  period.} \item{predTest}{An array containing the
   predictions of all component models and the EBMA model
-  for all observations in the calibration period.}
-  \item{predTest}{A matrix containing the predictions of
-  all component models and the EBMA model for all
-  observations in the test period.}
+  for all observations in the test period.}
   \item{outcomeCalibration}{A vector containing the true
   values of the dependent variable for all observations in
-  the calibration period.} \item{outcomeTest}{An optional
-  vector containing the true values of the dependent
-  variable for all observations in the test period.}
-  \item{modelNames}{A character vector containing the names
-  of all component models.  If no model names are
-  specified, names will be assigned automatically.}
-  \item{modelWeights}{A vector containing the model weights
-  assigned to each model.} \item{modelParams}{The
-  parameters for the individual logit models that transform
-  the component models.} \item{logLik}{The final
-  log-likelihood for the calibrated EBMA model.}
-  \item{exp}{The exponential shrinkage term.}
-  \item{tol}{Tolerance for improvements in the
-  log-likelihood before the EM algorithm will stop
+  the calibration period.} \item{outcomeTest}{A vector
+  containing the true values of the dependent variable for
+  all observations in the test period.} \item{modelNames}{A
+  character vector containing the names of all component
+  models.  If no model names are specified, names will be
+  assigned automatically.} \item{modelWeights}{A vector
+  containing the model weights assigned to each model.}
+  \item{modelParams}{An array containing the parameters for
+  the individual logit models that transform the component
+  models.} \item{logLik}{The final log-likelihood for the
+  calibrated EBMA model.} \item{exp}{The exponential
+  shrinkage term.} \item{tol}{Tolerance for improvements in
+  the log-likelihood before the EM algorithm will stop
   optimization.} \item{maxIter}{The maximum number of
   iterations the EM algorithm will run before stopping
   automatically.} \item{method}{The estimation method used.
   } \item{call}{The actual call used to create the object.}
 }
 \description{
-  Calibrate an ensemble Bayesian Model Averaging model HEAD
   This function calibrates an EBMA model based on
   out-of-sample performance in the calibration time period.
   Given a dependent variable and calibration-sample
@@ -89,9 +92,9 @@ helpfiles}
   however models with missing observations are penalized.
   When missing observations are prevalent in the
   calibration set, the EM algorithm is adjusted and model
-  paprameters are estimated by maximizing a renormalized
+  parameters are estimated by maximizing a renormalized
   partial expected complete-data log-likelihood (Fraley et
-  al. 2010). helpfiles
+  al. 2010).
 }
 \examples{
 \dontrun{
@@ -103,7 +106,7 @@ this.ForecastData <- makeForecastData(.predCalibration=calibrationSample[,c("LME
 .outcomeCalibration=calibrationSample[,"Insurgency"],.predTest=testSample[,c("LMER", "SAE", "GLM")],
 .outcomeTest=testSample[,"Insurgency"], .modelNames=c("LMER", "SAE", "GLM"))
 
-this.ensemble <- calibrateEnsemble(this.ForecastData, model="logit", tol=0.001, exp=3)
+this.ensemble <- calibrateEnsemble(this.ForecastData, model="logit", exp=3)
 }
 }
 \author{
@@ -138,12 +141,6 @@ this.ensemble <- calibrateEnsemble(this.ForecastData, model="logit", tol=0.001, 
   Probabilistic wind speed forecasting using ensembles and
   Bayesian model averaging. \emph{Journal of the American
   Statistical Association}. \bold{105}:25--35.
-
-  Fraley, C., A. E. Raftery, and T. Gneiting. (2010).
-  Calibrating multimodel forecast ensembles with
-  exchangeable and missing members using Bayesian model
-  averaging. \emph{Monthly Weather Review}.
-  \bold{138}:190--202.
 }
 \keyword{EBMA}
 \keyword{calibrate}

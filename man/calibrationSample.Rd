@@ -1,7 +1,7 @@
 \docType{data}
 \name{calibrationSample}
 \alias{calibrationSample}
-\title{Calibration sample data}
+\title{Exemplar calibration sample data}
 \description{
   This includes the calibration sample data for the
   insurgency forecasting example in Montgomery, Hollenbach

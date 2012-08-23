@@ -95,10 +95,10 @@ setClass(Class="ForecastDataLogit",
          validity=function(object){
            if(any(object@outcomeCalibration!=1 & object@outcomeCalibration!=0 & !is.na(object@outcomeCalibration))) 
              {stop("The outcomes for the binary model should be either 0 or 1 (Not true for outcome calibration set).")}	
-           if(any(object@outcomeTest!=1 & object@outcomeTest!=0 & !is.na(object@outcomeCalibration))) 
+           if(any(object@outcomeTest!=1 & object@outcomeTest!=0 & !is.na(object@outcomeTest))) 
              {stop("The outcomes for the binary model should be either 0 or 1 (Not true for outcome test set).")}	
            if(any(object@predCalibration<0 & !is.na(object@predCalibration)) | (any(object@predCalibration>1 & !is.na(object@predCalibration))))                 {stop("The predictions for the binary model should be between 0 or 1 (Not true for prediction calibration set).")}	
-           if(any(object@predTest<0 & !is.na(object@predTest)) |any(object@predTest>1 & !is.na(object@predTest)) )
+           if(any(object@predTest<0 & !is.na(object@predTest)) | any(object@predTest>1 & !is.na(object@predTest)) )
              {stop("The predictions for the binary model should be between 0 or 1 (Not true for prediction test set).")}	
            if(any(object@predCalibration==0, na.rm=TRUE) | any(object@predCalibration==1, na.rm=TRUE)) 
              {stop("The predictions for the binary model cannot be exactly 0 or 1 (Not true for prediction calibration set).")}	

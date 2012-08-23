@@ -18,6 +18,7 @@ setMethod(f="fitEnsemble",
             useModelParams=TRUE,
             predType="posteriorMedian")
           {
+
             
             .em <- function(outcomeCalibration, prediction, W)
               {
@@ -28,7 +29,9 @@ setMethod(f="fitEnsemble",
                 z.numerator[outcomeCalibration==0,] <- z.numerator.zero[outcomeCalibration==0,]
                 z.denom <- aaply(z.numerator, 1, sum, na.rm=T)
                 Z <-aperm(array(aaply(z.numerator, 2, function(x){x/z.denom}), dim=c(nMod, nObsCal, nDraws)), c(2,1,3))
-
+                Z[Z < ZERO] <- 0
+                Z[is.na(Z)] <- 0
+                
                 ## Step 2: Calculat the W's
                 .unnormalizedW<-aaply(Z, 2, sum, na.rm = TRUE)
                 W <- .unnormalizedW
@@ -53,9 +56,9 @@ setMethod(f="fitEnsemble",
 
             .makeAdj <- function(x){
               .adjPred <- qlogis(x)
-              .adjPred <- ((1+abs(.adjPred))^(1/exp))-1
               .negative <- .adjPred<0
               .pos <- .adjPred>1
+              .adjPred <- ((1+abs(.adjPred))^(1/exp))-1
               .miss <- is.na(.adjPred)
               .negative[.miss] <- FALSE
               .adjPred[.negative] <- .adjPred[.negative]*(-1)
@@ -63,11 +66,12 @@ setMethod(f="fitEnsemble",
               .adjPred[.miss] <- NA
               .adjPred
             }
-            
+
+
             .modelFitter <- function(preds){
-              .adjPred <- .makeAdj(preds)
-              .thisModel <- glm(outcomeCalibration~.adjPred, family=binomial(link = "logit"))
-              if (!.thisModel$converged){stop("One or more of the component logistic regressions failed to converge.  This may indicate perfect separtion or some other problem.  Try the useModelParams=FALSE option.")}
+              .adjPred <-.makeAdj(preds)
+              .thisModel <- glm(outcomeCalibration~.adjPred, family="binomial")
+              if (!.thisModel$converged){stop("One or more of the component logistic regressions failed to converge.  This may indicate perfect separation or some other problem.  Try the useModelParams=FALSE option.")}
               return(.thisModel)
             }
 
@@ -98,7 +102,7 @@ setMethod(f="fitEnsemble",
               predCalibrationAdj <- aperm(array(laply(.models, .predictCal), dim=c(nMod, nObsCal, nDraws)), c(2,1,3))
               modelParams <- aperm(array(laply(.models, coefficients), dim=c(nMod, 2, nDraws)), c(2,1,3))
             }
-            if(nDraws>1 & useModelParams==TRUE){ # This code is in development for exchangeability
+            if(nDraws>1 & useModelParams==TRUE){ 
               predCalibrationAdj <- aperm(aaply(.models, 1:2, .predictCal), c(3,1,2))
               modelParams <- aperm(aaply(.models, 1:2, coefficients), c(3,1,2))
             }
