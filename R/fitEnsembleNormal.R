@@ -80,7 +80,7 @@ setMethod(f="fitEnsemble",
             ZERO<-1e-4
             
             ## Fit Models
-            if(useModelParams==TRUE){.models <- aaply(predCalibration, 2:3, .fun=.modelFitter)}
+            if(useModelParams==TRUE){.models <- alply(predCalibration, 2:3, .fun=.modelFitter)}
 
             ## Extract needed info
             if(nDraws==1 & useModelParams==TRUE){

@@ -70,7 +70,7 @@ setMethod(f="fitEnsemble",
 
             .modelFitter <- function(preds){
               .adjPred <-.makeAdj(preds)
-              .thisModel <- glm(outcomeCalibration~.adjPred, family="binomial")
+              .thisModel <- glm(outcomeCalibration~.adjPred, family=binomial(link="logit"))
               if (!.thisModel$converged){stop("One or more of the component logistic regressions failed to converge.  This may indicate perfect separation or some other problem.  Try the useModelParams=FALSE option.")}
               return(.thisModel)
             }
@@ -95,7 +95,7 @@ setMethod(f="fitEnsemble",
             ZERO<-1e-4
             
             ## Fit Models
-            if(useModelParams==TRUE){.models <- aaply(predCalibration, 2:3, .fun=.modelFitter) }
+            if(useModelParams==TRUE){.models <- alply(predCalibration, 2:3, .fun=.modelFitter) }
 
             ## Extract needed info
             if(nDraws==1 & useModelParams==TRUE){
