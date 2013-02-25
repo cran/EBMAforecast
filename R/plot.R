@@ -75,7 +75,6 @@ setMethod(
           definition=function(x, y=NULL, period="calibration",  subset=1,
             mainLabel=paste("Observation", subset), xLab="Outcome", yLab="Posterior Probability", cols=2:(length(x@modelNames)+1), ... )
           {
-
             thisDraw=1
 
             if(period=="calibration"){
