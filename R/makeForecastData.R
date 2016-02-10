@@ -9,24 +9,29 @@
 #' @param .modelNames A vector of length p with the names of the component models.  
 #' @param ... Additional arguments not implemented
 #'
+#' Additionally, the functions \code{show} and \code{print} can be used to display data objects of class 'ForecastData'.
+#' \code{show} displays only 1 digit and takes the following parameters:
+#' @param x A data object of class 'ForecastData'
+#' 
+#' \code{print} let's the use specify the number of digits printed and takes the arguments:
+#' @param object A data object of class 'ForecastData'
+#' @param digits User specified number of digits to be displayed.
+#'
 #' @return A data object of the class 'ForecastData' with the following slots: 
 #' \item{predCalibration}{An array containing the predictions of all component models for all observations in the calibration period.} 
 #' \item{predTest}{An array containing the predictions of all component models for all observations in the test period.}
 #' \item{outcomeCalibration}{A vector containing the true values of the dependent variable for all observations in the calibration period.} 
 #' \item{outcomeTest}{A vector containing the true values of the dependent variable for all observations in the test period.}
 #' \item{modelNames}{A character vector containing the names of all component models.  If no model names are specified, names will be assigned automatically.}
-#' @author  Michael D. Ward <\email{michael.d.ward@@duke.edu}> and Jacob M. Montgomery <\email{jacob.montgomery@@wustl.edu}> and Florian M. Hollenbach <\email{florian.hollenbach@@duke.edu}>
+#' @author  Michael D. Ward <\email{michael.d.ward@@duke.edu}> and Jacob M. Montgomery <\email{jacob.montgomery@@wustl.edu}> and Florian M. Hollenbach <\email{florian.hollenbach@@tamu.edu}>
 #'
+#'
+#' @references Montgomery, Jacob M., Florian M. Hollenbach and Michael D. Ward. (2015). Calibrating ensemble forecasting models with sparse data in the social sciences.   \emph{International Journal of Forecasting}. In Press.
 #' @references Montgomery, Jacob M., Florian M. Hollenbach and Michael D. Ward. (2012). Improving Predictions Using Ensemble Bayesian Model Averaging. \emph{Political Analysis}. \bold{20}: 271-291.
 #'
-#' @examples
-#'
-#' \dontrun{
-#' data(calibrationSample)
+#' @examples  data(calibrationSample)
 #' 
-#' 
-#'
-#' data(testSample) 
+#' \dontrun{data(testSample) 
 #' this.ForecastData <- makeForecastData(.predCalibration=calibrationSample[,c("LMER", "SAE", "GLM")],
 #' .outcomeCalibration=calibrationSample[,"Insurgency"],.predTest=testSample[,c("LMER", "SAE", "GLM")],
 #' .outcomeTest=testSample[,"Insurgency"], .modelNames=c("LMER", "SAE", "GLM"))
@@ -45,9 +50,10 @@
 #' setPredTest(this.ForecastData)<-testSample[,c("LMER", "SAE", "GLM")]
 #' setOutcomeTest(this.ForecastData)<-testSample[,"Insurgency"]
 #' setModelNames(this.ForecastData)<-c("LMER", "SAE", "GLM")
-#' }
+#'}
 #'
 #' @seealso ensembleBMA
+#' @aliases makeForecastData-method, ForecastData-method setModelNames<-, ForecastData-generic setModelNames<-, setOutcomeTest<-, setOutcomeCalibration, setPredTest, setPredCalibration, print-method, show-method
 #' @rdname makeForecastData
 #' @export
 setGeneric(name="makeForecastData",
@@ -62,7 +68,7 @@ setGeneric(name="makeForecastData",
            )
 
 
-
+#' @rdname makeForecastData
 #' @export
 setMethod(f="makeForecastData",
           definition=function(
@@ -94,7 +100,7 @@ setMethod(f="makeForecastData",
           }
           )
 
-
+#' @rdname makeForecastData
 #' @export
 setMethod(
 		f="print",
@@ -120,6 +126,7 @@ setMethod(
 			}
 			)
 
+#' @rdname makeForecastData
 #' @export
 setMethod(
 		f="show",

@@ -1,5 +1,4 @@
 
-#' @export
 setClass(Class="FDatFitLogit",
          contains="ForecastData",
          representation=representation(
@@ -10,6 +9,10 @@ setClass(Class="FDatFitLogit",
            tol="numeric",
            maxIter="numeric",
            method="character",
+           iter="numeric",
+           model="character",
+           modelResults = "list",
+           useModelParams = "logical",
            call="call"
            ),
          validity=function(object){

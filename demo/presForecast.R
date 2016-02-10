@@ -9,7 +9,6 @@ this.ForecastData<-makeForecastData(.predCalibration=full.forecasts[c(1:14),],.o
 thisEnsemble<-calibrateEnsemble(this.ForecastData, model="normal", useModelParams=FALSE, tol=0.000000001)
 
 summary(thisEnsemble, period="calibration", showCoefs=FALSE)
-par(mfrow=c(1,1))
 plot(thisEnsemble, period="test", main="Forecast of 2008 Election")
 
 

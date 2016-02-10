@@ -1,5 +1,4 @@
 
-#' @export
 setClass(Class="FDatFitNormal",
          contains="ForecastData",
          representation=representation(
@@ -12,6 +11,10 @@ setClass(Class="FDatFitNormal",
            maxIter="numeric",
            method="character",
            predType="character",
+           iter="numeric",
+           model="character",
+           modelResults = "list",
+           useModelParams = "logical",
            call="call"
            )
          )

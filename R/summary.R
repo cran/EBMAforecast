@@ -15,11 +15,11 @@ setClass(Class="SummaryForecastData",
 #'
 #' This function summarizes the Ensemble models that have been fit previously by the user.
 #'
-#' @param object An object of the subclass \code{FDatFitLogit} or \code{FDatFitNormal}
+#' @param object An object of the subclass "FDatFitLogit" or "FDatFitNormal"
 #' @param period The period for which the summary should be provided, either "calibration" or "test".
-#' @param fitStatistics A vector naming statistics that should be calculated.  Possible values for objects in the \code{FDatFitLogit} subclass include "auc", "brier", "percCorrect", "pre". Possible values for objects in the \code{FDatFitNormal} subclass include "rmse" and "mae."  Additional metrics will be made available in a future release of this package.
-#' @param threshold The threshold used to calculate when a "positive" prediction is made for a model.  Not used for objects of the \code{FDatFitNormal} subclass.
-#' @param baseModel A vector containing predictions used to calculate proportional reduction of error ("pre"). Not used for objects of the \code{FDatFitNormal} subclass.
+#' @param fitStatistics A vector naming statistics that should be calculated.  Possible values for objects in the "FDatFitLogit" subclass include "auc", "brier", "percCorrect", "pre". Possible values for objects in the "FDatFitNormal" subclass include "rmse" and "mae."  Additional metrics will be made available in a future release of this package.
+#' @param threshold The threshold used to calculate when a "positive" prediction is made for a model.  Not used for objects of the "FDatFitNormal" subclass.
+#' @param baseModel A vector containing predictions used to calculate proportional reduction of error ("pre"). Not used for objects of the "FDatFitNormal" subclass.
 #' @param showCoefs A logical indicating whether model coefficients from the ensemble should be shown.
 #' @param ... Not implemented
 #' @method summary FDatFitLogit
@@ -28,12 +28,9 @@ setClass(Class="SummaryForecastData",
 #' @return A data object of the class 'SummaryForecastData' with the following slots:
 #' \item{summaryData}{Under the default, the function produces a matrix containing one row for each model plus one row for the EBMA forecast.  The first column is always the model weights assigned to the component models.  The second and third columns display the model parameters for the transformation of the component models.  The remaining columns are the requested fit statistics for all models, as calculated by the \code{copareModels} function.  If \code{showCoefs=FALSE}, then the model parameters will not be shown.}
 #'
-#' @author  Michael D. Ward <\email{michael.d.ward@@duke.edu}> and Jacob M. Montgomery <\email{jacob.montgomery@@wustl.edu}>
+#' @author  Michael D. Ward <\email{michael.d.ward@@duke.edu}> and Jacob M. Montgomery <\email{jacob.montgomery@@wustl.edu}> and Florian M. Hollenbach <\email{florian.hollenbach@@tamu.edu}>
 #'
-#' @examples 
-#'
-#' \dontrun{
-#' data(calibrationSample)
+#' @examples \dontrun{ data(calibrationSample)
 #'
 #' data(testSample) 
 #' 
@@ -46,7 +43,7 @@ setClass(Class="SummaryForecastData",
 #' summary(this.ensemble, period="calibration") 
 #'
 #' summary(this.ensemble, period="test",showCoefs=FALSE)
-#' }
+#'}
 #'
 #' @aliases summary,FDatFitLogit-method print,SummaryForecastData-method show,SummaryForecastData-method SummaryForecastData-class summary,FDatFitNormal-method
 #' @export

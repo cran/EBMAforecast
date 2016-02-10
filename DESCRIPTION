@@ -1,19 +1,17 @@
 Package: EBMAforecast
 Type: Package
 Title: Ensemble BMA Forecasting
-Version: 0.42
-Date: 2013-02-25
-Author: Jacob M. Montgomery, Florian Hollenbach, and Michael D. Ward
-Maintainer: Jacob Montgomery <jacob.montgomery@wustl.edu>
-Description: Ensemble BMA for social science data
+Version: 0.52
+Date: 2016-02-09
+Author: Jacob M. Montgomery, Florian M. Hollenbach, and Michael D. Ward
+Maintainer: Florian M. Hollenbach <fhollenbach@tamu.edu>
+Description: Ensemble BMA for social science data.
 License: GPL (>= 2)
-Depends: separationplot, ensembleBMA, plyr, methods, Hmisc, abind
-LazyLoad: yes
-Collate: 'forecastData.R' 'calibrateEnsemble.R' 'fDatFitLogit.R'
-        'fDatFitNormal.R' 'compareModels.R' 'document-data.R'
-        'summary.R' 'fitEnsembleLogit.R' 'fitEnsembleNormal.R'
-        'makeForecastData.R' 'plot.R'
-Packaged: 2013-02-25 04:10:10 UTC; jmontgomery
-NeedsCompilation: no
+Depends: stats, graphics, separationplot, plyr, methods, Hmisc, abind
+Imports: Rcpp (>= 0.11.3)
+LinkingTo: Rcpp
+RoxygenNote: 5.0.1
+NeedsCompilation: yes
+Packaged: 2016-02-09 21:35:15 UTC; florianhollenbach
 Repository: CRAN
-Date/Publication: 2013-02-25 07:29:27
+Date/Publication: 2016-02-10 09:11:07

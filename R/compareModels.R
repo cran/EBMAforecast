@@ -24,7 +24,7 @@ setClass(Class="CompareModels",
 #'
 #' This function produces statistics to compare the predictive performance of the different models component models, as well as for the EBMA model itself, for either the calibration or the test period. It currently calculates the area under the ROC (\code{auc}), the \code{brier} score, the percent of observations predicted correctly (\code{percCorrect}), as well as the proportional reduction in error compared to some baseline model (\code{pre}) for binary models. For models with normally distributed outcomes the \code{CompareModels} function can be used to calculate the root mean squared error (\code{rmse}) as well as the mean absolute error (\code{mae}).
 #'
-#' @param .forecastData An object of class \code{ForecastData}. 
+#' @param .forecastData An object of class 'ForecastData'. 
 #' @param .period Can take value of "calibration" or "test" and indicates the period for which the test statistics should be calculated.
 #' @param .fitStatistics A vector naming statistics that should be calculated.  Possible values include "auc", "brier", "percCorrect", "pre" for logit models and "mae","rsme" for normal models.
 #' @param .threshold The threshold used to calculate when a "positive" prediction is made by the model for binary dependent variables.
@@ -37,15 +37,15 @@ setClass(Class="CompareModels",
 #' \item{threshold}{The threshold used to calculate when a "positive" prediction is made by the model.}
 #' \item{baseModel}{Vector containing predictions used to calculate proportional reduction of error ("pre").}
 #'
-#' @author  Michael D. Ward <\email{michael.d.ward@@duke.edu}> and Jacob M. Montgomery <\email{jacob.montgomery@@wustl.edu}>
+#' @author  Michael D. Ward <\email{michael.d.ward@@duke.edu}> and Jacob M. Montgomery <\email{jacob.montgomery@@wustl.edu}> and Florian M. Hollenbach <\email{florian.hollenbach@@tamu.edu}>
 #'
+#' @references Montgomery, Jacob M., Florian M. Hollenbach and Michael D. Ward. (2015). Calibrating ensemble forecasting models with sparse data in the social sciences.   \emph{International Journal of Forecasting}. In Press.
 #' @references Montgomery, Jacob M., Florian M. Hollenbach and Michael D. Ward. (2012). Improving Predictions Using Ensemble Bayesian Model Averaging. \emph{Political Analysis}. \bold{20}: 271-291.
 #'
 #' 
-#' @examples
-#'
-#' \dontrun{
-#' data(calibrationSample)
+#' @import abind methods stats graphics
+#' 
+#' @examples \dontrun{data(calibrationSample)
 #' 
 #' data(testSample) 
 #' 
@@ -60,7 +60,10 @@ setClass(Class="CompareModels",
 #' compareModels(this.ensemble,"test") 
 #'}
 #'
-#' @seealso ensembleBMA
+#' @importFrom plyr aaply
+#' @importFrom Hmisc somers2
+#'
+#' @seealso ensembleBMA, other functions
 #' @aliases compareModels,ForecastData-method CompareModels-class
 #' @export
 setGeneric(name="compareModels",
@@ -153,7 +156,7 @@ setMethod(f="compareModels",
               outMat[,"brier"] <-aaply(preds, 2,.fun=my.fun, .expand=TRUE)
                                              }
             if("auc" %in% .fitStatistics & class(.forecastData)[1]=="FDatFitLogit"){
-              my.fun <- function(x){Hmisc::somers2(x, y)[1]}
+              my.fun <- function(x){somers2(x, y)[1]}
               outMat[,"auc"] <- aaply(preds, 2,.fun=my.fun, .expand=TRUE)}
             if("perCorrect" %in% .fitStatistics){
               my.fun <- function(x){mean((x>.threshold)*y + (x<.threshold)*(1-y), na.rm=TRUE)}
@@ -183,6 +186,7 @@ setMethod(f="compareModels",
 
             }
             
+            ### NOTE: Make sure all of the above options work with missing values.  Also, if only work for one kind of data, throw an error
             rownames(outMat) <- colnames(preds)            
           }
         out@fitStatistics <- outMat
@@ -190,3 +194,4 @@ setMethod(f="compareModels",
 
         }
 )
+
