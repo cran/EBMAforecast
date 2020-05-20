@@ -1,17 +1,34 @@
 Package: EBMAforecast
 Type: Package
-Title: Ensemble BMA Forecasting
-Version: 0.52
-Date: 2016-02-09
-Author: Jacob M. Montgomery, Florian M. Hollenbach, and Michael D. Ward
-Maintainer: Florian M. Hollenbach <fhollenbach@tamu.edu>
-Description: Ensemble BMA for social science data.
+Title: Estimate Ensemble Bayesian Model Averaging Forecasts using Gibbs
+        Sampling or EM-Algorithms
+Version: 1.0.0
+Date: 2020-05-20
+Authors@R: c(person("Florian M.", "Hollenbach", email = "fhollenbach@tamu.edu",
+                  role = c("aut", "cre"), comment = c(ORCID = "0000-0002-9599-556X")),
+	person("Jacob M.", "Montgomery", role = c("aut")),
+	person("Michael D.", "Ward", role = c("aut")))
+URL: <https://github.com/fhollenbach/EBMA/>
+Description: Create forecasts from multiple predictions using ensemble Bayesian model averaging (EBMA). EBMA models can be estimated using an expectation maximization (EM) algorithm or as fully Bayesian models via Gibbs sampling.
 License: GPL (>= 2)
-Depends: stats, graphics, separationplot, plyr, methods, Hmisc, abind
-Imports: Rcpp (>= 0.11.3)
+Imports: Rcpp (>= 1.0.2), plyr, graphics, separationplot, Hmisc, abind,
+        gtools, methods
 LinkingTo: Rcpp
-RoxygenNote: 5.0.1
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.0
+Collate: 'EBMAforecast.R' 'forecastData.R' 'EBMApredict.R'
+        'RcppExports.R' 'calibrateEnsemble.R' 'compareModels.R'
+        'document-data.R' 'fitEnsembleLogit.R' 'fitEnsembleNormal.R'
+        'global.R' 'makeForecastData.R' 'predictLogit.R'
+        'predictNormal.R' 'summary_plot.R' 'print_show.R'
+        'utility-functions.R'
 NeedsCompilation: yes
-Packaged: 2016-02-09 21:35:15 UTC; florianhollenbach
+Packaged: 2020-05-20 11:01:56 UTC; florianhollenbach
+Author: Florian M. Hollenbach [aut, cre]
+    (<https://orcid.org/0000-0002-9599-556X>),
+  Jacob M. Montgomery [aut],
+  Michael D. Ward [aut]
+Maintainer: Florian M. Hollenbach <fhollenbach@tamu.edu>
 Repository: CRAN
-Date/Publication: 2016-02-10 09:11:07
+Date/Publication: 2020-05-20 15:40:06 UTC

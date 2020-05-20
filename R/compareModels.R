@@ -1,23 +1,5 @@
-
-#' @export
-setClass(Class="CompareModels",
-         representation = representation(
-           fitStatistics="matrix",
-           period="character",
-           threshold="numeric",
-           baseModel="numeric"),
-         prototype=prototype(
-           fitStatistics=matrix(NA, nrow=0, ncol=0),
-           period=character(),
-           threshold=numeric(),
-           baseModel=numeric()
-           ),
-         validity=function(object){
-           if(object@period!="test" & object@period!="calibration"){
-             stop("Period must either be for 'calibration' or 'test'")
-           }
-         }
-         )
+#' @include forecastData.R
+NULL
 
 ##
 #' Function for comparing multiple models based on predictive performance
@@ -39,7 +21,6 @@ setClass(Class="CompareModels",
 #'
 #' @author  Michael D. Ward <\email{michael.d.ward@@duke.edu}> and Jacob M. Montgomery <\email{jacob.montgomery@@wustl.edu}> and Florian M. Hollenbach <\email{florian.hollenbach@@tamu.edu}>
 #'
-#' @references Montgomery, Jacob M., Florian M. Hollenbach and Michael D. Ward. (2015). Calibrating ensemble forecasting models with sparse data in the social sciences.   \emph{International Journal of Forecasting}. In Press.
 #' @references Montgomery, Jacob M., Florian M. Hollenbach and Michael D. Ward. (2012). Improving Predictions Using Ensemble Bayesian Model Averaging. \emph{Political Analysis}. \bold{20}: 271-291.
 #'
 #' 
@@ -64,7 +45,29 @@ setClass(Class="CompareModels",
 #' @importFrom Hmisc somers2
 #'
 #' @seealso ensembleBMA, other functions
-#' @aliases compareModels,ForecastData-method CompareModels-class
+#' @rdname compareModels
+#' @export
+setClass(Class="CompareModels",
+         representation = representation(
+           fitStatistics="matrix",
+           period="character",
+           threshold="numeric",
+           baseModel="numeric"),
+         prototype=prototype(
+           fitStatistics=matrix(NA, nrow=0, ncol=0),
+           period=character(),
+           threshold=numeric(),
+           baseModel=numeric()
+           ),
+         validity=function(object){
+           if(object@period!="test" & object@period!="calibration"){
+             stop("Period must either be for 'calibration' or 'test'")
+           }
+         }
+         )
+
+
+#' @rdname compareModels
 #' @export
 setGeneric(name="compareModels",
            def=function(.forecastData,
@@ -78,7 +81,7 @@ setGeneric(name="compareModels",
 
 
 
-
+#' @rdname compareModels
 #' @export
 setMethod(f="compareModels",
           signature(.forecastData="ForecastData"),
@@ -86,12 +89,12 @@ setMethod(f="compareModels",
           {
             if(.period == "calibration")
               {
-                preds <- aaply(.forecastData@predCalibration,c(1:2),mean)
+                preds <- plyr::aaply(.forecastData@predCalibration,c(1:2),mean)
                 y <- .forecastData@outcomeCalibration
               }
             if(.period=="test")
               {
-                preds <-  aaply(.forecastData@predTest,c(1:2),mean)
+                preds <-  plyr::aaply(.forecastData@predTest,c(1:2),mean)
                 y <- .forecastData@outcomeTest
               }
 
@@ -153,14 +156,14 @@ setMethod(f="compareModels",
             
             if("brier" %in%.fitStatistics & class(.forecastData)[1]=="FDatFitLogit"){
               my.fun <- function(x){mean((x-y)^2, na.rm=TRUE)}
-              outMat[,"brier"] <-aaply(preds, 2,.fun=my.fun, .expand=TRUE)
+              outMat[,"brier"] <-plyr::aaply(preds, 2,.fun=my.fun, .expand=TRUE)
                                              }
             if("auc" %in% .fitStatistics & class(.forecastData)[1]=="FDatFitLogit"){
-              my.fun <- function(x){somers2(x, y)[1]}
-              outMat[,"auc"] <- aaply(preds, 2,.fun=my.fun, .expand=TRUE)}
+              my.fun <- function(x){Hmisc::somers2(x, y)[1]}
+              outMat[,"auc"] <- plyr::aaply(preds, 2,.fun=my.fun, .expand=TRUE)}
             if("perCorrect" %in% .fitStatistics){
               my.fun <- function(x){mean((x>.threshold)*y + (x<.threshold)*(1-y), na.rm=TRUE)}
-              outMat[,"perCorrect"] <- aaply(preds, 2,.fun=my.fun, .expand=TRUE)
+              outMat[,"perCorrect"] <- plyr::aaply(preds, 2,.fun=my.fun, .expand=TRUE)
             }
             if("pre" %in% .fitStatistics & class(.forecastData)[1]=="FDatFitLogit") {
               my.fun <- function(x){
@@ -173,16 +176,16 @@ setMethod(f="compareModels",
                 baseline.wrong <- .nObsThis-sum(.baseModelThis==.yThis)
                 (baseline.wrong - num.wrong)/baseline.wrong
               }
-              outMat[,"pre"] <- aaply(preds, 2,.fun=my.fun, .expand=TRUE)
+              outMat[,"pre"] <- plyr::aaply(preds, 2,.fun=my.fun, .expand=TRUE)
             }
             if("rmse" %in% .fitStatistics & class(.forecastData)[1]=="FDatFitNormal"){
               my.fun <- function(x) {sqrt(mean((x-y)^2, na.rm=TRUE))}
-              outMat[,"rmse"] <- aaply(preds, 2, .fun=my.fun, .expand=TRUE)
+              outMat[,"rmse"] <- plyr::aaply(preds, 2, .fun=my.fun, .expand=TRUE)
 
             }
             if("mae" %in% .fitStatistics & class(.forecastData)[1]=="FDatFitNormal"){
               my.fun <- function(x) {mean(abs(x-y), na.rm=TRUE)}
-              outMat[,"mae"] <- aaply(preds, 2, .fun=my.fun, .expand=TRUE)
+              outMat[,"mae"] <- plyr::aaply(preds, 2, .fun=my.fun, .expand=TRUE)
 
             }
             

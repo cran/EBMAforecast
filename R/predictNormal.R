@@ -1,4 +1,3 @@
-#' @rdname EBMApredict
 setMethod(f="prediction",
           signature(EBMAmodel="FDatFitNormal"),
           definition=function(EBMAmodel, 
@@ -20,6 +19,9 @@ setMethod(f="prediction",
             .models = EBMAmodel@modelResults
             predType = EBMAmodel@predType
             useModelParams = EBMAmodel@useModelParams
+            if(EBMAmodel@method == "gibbs"){
+              .posteriorW <- EBMAmodel@posteriorWeights
+            }
             #if(sum(EBMAmodel@modelParams[1,,])==0 & sum(EBMAmodel@modelParams[2,,])==nMods){
             #  useModelParams = FALSE
             #}
@@ -61,26 +63,45 @@ setMethod(f="prediction",
                 }
               } 
             if(useModelParams==FALSE){predTestAdj <- Predictions}
-            .flatPredsTest <- matrix(aaply(predTestAdj, c(1,2), function(x) {mean(x, na.rm=TRUE)}), ncol=nMod)
-              
-            if (predType=="posteriorMean"){
-              bmaPredTest <-array(aaply(.flatPredsTest, 1, function(x) {sum(x* W, na.rm=TRUE)}), dim=c(nObsTest, 1,nDraws))
-              bmaPredTest <-  bmaPredTest/array(t(W%*%t(1*!is.na(.flatPredsTest))), dim=c(nObsTest, 1, nDraws))
-              bmaPredTest[,,-1] <- NA
-            }
-             
-            if (predType=="posteriorMedian"){
-              .altQBMAnormal <- function(x){
-                .x <- x[!is.na(x)]
-                .W <- W[!is.na(x)]
-                ..sdVec <- .sdVec[!is.na(x)]
-                .ebmaMedian(.W, .x, ..sdVec)
+            .flatPredsTest <- matrix(plyr::aaply(predTestAdj, c(1,2), function(x) {mean(x, na.rm=TRUE)}), ncol=nMod)
+            
+            if(method == "EM"){
+              .posteriorW <- postPredTest <- matrix() ### empty in EM 
+              if (predType=="posteriorMean"){
+                bmaPredTest <-array(plyr::aaply(.flatPredsTest, 1, function(x) {sum(x* W, na.rm=TRUE)}), dim=c(nObsTest, 1,nDraws))
+                bmaPredTest <-  bmaPredTest/array(t(W%*%t(1*!is.na(.flatPredsTest))), dim=c(nObsTest, 1, nDraws))
+                bmaPredTest[,,-1] <- NA
               }
-              bmaPredTest <- array(aaply(.flatPredsTest, 1, .altQBMAnormal),  dim=c(nObsTest, 1,nDraws))
-              bmaPredTest[,,-1] <- NA
+               
+              if (predType=="posteriorMedian"){
+                .altQBMAnormal <- function(x){
+                  .x <- x[!is.na(x)]
+                  .W <- W[!is.na(x)]
+                  ..sdVec <- .sdVec[!is.na(x)]
+                  .ebmaMedian(.W, .x, ..sdVec)
+                }
+                bmaPredTest <- array(plyr::aaply(.flatPredsTest, 1, .altQBMAnormal),  dim=c(nObsTest, 1,nDraws))
+                bmaPredTest[,,-1] <- NA
+              }
+               
+              test <- abind(bmaPredTest, Predictions, along=2);  colnames(test) <- c("EBMA", modelNames)
             }
-             
-            test <- abind(bmaPredTest, Predictions, along=2);  colnames(test) <- c("EBMA", modelNames)
+            if(method == "gibbs"){
+              postPredTest <- matrix(data=NA, nrow=dim(predTestAdj)[1], ncol=dim(.posteriorW)[1])
+              for(i in 1:dim(.posteriorW)[1]){
+                bmaPredTest <-array(plyr::aaply(.flatPredsTest, 1, function(x) {sum(x* .posteriorW[i,], na.rm=TRUE)}), dim=c(nObsTest, 1,nDraws))
+                bmaPredTest <-  bmaPredTest/array(t(.posteriorW[i,]%*%t(1*!is.na(.flatPredsTest))), dim=c(nObsTest, 1, nDraws))
+                bmaPredTest[,,-1] <- NA
+                postPredTest[,i] <- bmaPredTest[,1,]
+              }
+              if(predType == "posteriorMean"){
+                bmaPredTest[,1,] <- apply(postPredTest, 1, FUN=mean)
+              }
+              if(predType == "posteriorMedian"){
+                bmaPredTest[,1,] <- apply(postPredTest, 1, FUN=median)
+              }
+              test <- abind::abind(bmaPredTest, .forecastData@predTest, along=2);  colnames(test) <- c("EBMA", modelNames)
+            }
             if(is.null(Outcome)==TRUE){Outcome = rep(numeric(0),dim(test)[1])}
                                        
 
@@ -90,6 +111,8 @@ setMethod(f="prediction",
                 outcomeTest= Outcome,
                 modelNames=modelNames,
                 modelWeights=W,
+                posteriorWeights = .posteriorW,
+                posteriorPredTest = postPredTest,
                 call=match.call()
                 )
           }

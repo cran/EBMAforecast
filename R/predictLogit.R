@@ -1,22 +1,28 @@
-#' @rdname EBMApredict
 setGeneric(name="prediction",
            def=function( EBMAmodel, 
                          Predictions,
                          Outcome,
+                         method="EM",
                          ...)
            {standardGeneric("prediction")}
            )
 
 #' @importFrom plyr alply aaply laply
-#' @rdname EBMApredict
 setMethod(f="prediction",
           signature(EBMAmodel="FDatFitLogit"),
           definition=function(EBMAmodel, 
                               Predictions,
                               Outcome,
+                              method="EM",
                               ...)
           {
 
+
+          #extract variables and observations from EBMAmodel
+          predCalibration <- slot(EBMAmodel, "predCalibration")
+          predCalibration <- predCalibration[,which(names(predCalibration[1,,1])!="EBMA"),,drop=FALSE]
+          outcomeCalibration <- slot(EBMAmodel, "outcomeCalibration")
+               
           #Outcome <- matrix(Outcome)    
              nDraws <- dim(predCalibration)[3]
             if(is.matrix(Predictions)==TRUE){
@@ -38,6 +44,10 @@ setMethod(f="prediction",
             exp = EBMAmodel@exp
             nObsTest = dim(Predictions)[1]
             useModelParams = EBMAmodel@useModelParams
+            
+            if(EBMAmodel@method == "gibbs"){
+              .posteriorW <- EBMAmodel@posteriorWeights
+            }
 
 
               ## Set constants
@@ -88,20 +98,20 @@ setMethod(f="prediction",
             
             ## Fit Models
             if(useModelParams){
-              .models <- alply(predCalibration, 2:3, .fun=.modelFitter)
+              .models <- plyr::alply(predCalibration, 2:3, .fun=.modelFitter)
             }
 
              ## Extract needed info
             if(nDraws==1 & useModelParams==TRUE){
-              predCalibrationAdj <- aperm(array(laply(.models, .predictCal), dim=c(nMod, nObsCal, nDraws)), c(2,1,3))
+              predCalibrationAdj <- aperm(array(plyr::laply(.models, .predictCal), dim=c(nMod, nObsCal, nDraws)), c(2,1,3))
               dim(predCalibrationAdj)
-              array(laply(.models, coefficients), dim=c(nMod, 2, nDraws))
-              modelParams <- aperm(array(laply(.models, coefficients), dim=c(nMod, 2, nDraws)), c(2,1,3))
+              array(plyr::laply(.models, coefficients), dim=c(nMod, 2, nDraws))
+              modelParams <- aperm(array(plyr::laply(.models, coefficients), dim=c(nMod, 2, nDraws)), c(2,1,3))
             }
 
             if(nDraws>1 & useModelParams==TRUE){ # This code is in development for exchangeability
-              predCalibrationAdj <- aperm(aaply(.models, 1:2, .predictCal), c(3,1,2))
-              modelParams <- aperm(aaply(.models, 1:2, coefficients), c(3,1,2))
+              predCalibrationAdj <- aperm(plyr::aaply(.models, 1:2, .predictCal), c(3,1,2))
+              modelParams <- aperm(plyr::aaply(.models, 1:2, coefficients), c(3,1,2))
             }
             if(useModelParams==FALSE){
               .adjPred <- .makeAdj(predCalibration)
@@ -133,12 +143,36 @@ setMethod(f="prediction",
               predTestAdj <- Predictions
               }
 
-              .flatPredsTest <- matrix(aaply(predTestAdj, c(1,2), function(x) {mean(x, na.rm=TRUE)}), ncol=nMod)
-              bmaPredTest <-array(aaply(.flatPredsTest, 1, function(x) {sum(x* W, na.rm=TRUE)}), dim=c(nObsTest, 1,nDraws))
+            # Runs if user specifies Bayesian algorithm
+            if(method=="gibbs"){
+              LL <- numeric(); iter <- numeric()
+
+              .flatPredsTest <- matrix(plyr::aaply(predTestAdj, c(1,2), function(x) {mean(x, na.rm=TRUE)}), ncol=nMod)
+              postPredTest <- matrix(data=NA, nrow=dim(predTestAdj)[1], ncol=dim(.posteriorW)[1])
+              for(i in 1:dim(.posteriorW)[1]){
+                bmaPredTest <-array(plyr::aaply(.flatPredsTest, 1, function(x) {sum(x* .posteriorW[i,], na.rm=TRUE)}), dim=c(nObsTest, 1,nDraws))
+                bmaPredTest <-  bmaPredTest/array(t(.posteriorW[i,]%*%t(1*!is.na(.flatPredsTest))), dim=c(nObsTest, 1, nDraws))
+                bmaPredTest[,,-1] <- NA
+                postPredTest[,i] <- bmaPredTest[,1,]
+              }
+              if(predType == "posteriorMean"){
+                bmaPredTest[,1,] <- apply(postPredTest, 1, FUN=mean)
+              }
+              if(predType == "posteriorMedian"){
+                bmaPredTest[,1,] <- apply(postPredTest, 1, FUN=median)
+              }
+              test <- abind::abind(bmaPredTest, .forecastData@predTest, along=2);  colnames(test) <- c("EBMA", modelNames)
+            }
+            
+            if(method=="EM"){
+              .posteriorW <- postPredTest <- matrix() ### empty in EM 
+              .flatPredsTest <- matrix(plyr::aaply(predTestAdj, c(1,2), function(x) {mean(x, na.rm=TRUE)}), ncol=nMod)
+              bmaPredTest <-array(plyr::aaply(.flatPredsTest, 1, function(x) {sum(x* W, na.rm=TRUE)}), dim=c(nObsTest, 1,nDraws))
               bmaPredTest <-  bmaPredTest/array(t(W%*%t(1*!is.na(.flatPredsTest))), dim=c(nObsTest, 1, nDraws))
               bmaPredTest[,,-1] <- NA
-
               test <- abind(bmaPredTest, Predictions, along=2);  colnames(test) <- c("EBMA", modelNames)
+            }
+            
               if(is.null(Outcome)==TRUE){Outcome = rep(numeric(0),nObsTest)}
                 new("FDatFitLogit",
                 predTest=test,
@@ -146,6 +180,8 @@ setMethod(f="prediction",
                 modelNames=modelNames,
                 modelWeights=W,
                 modelParams=modelParams,
+                posteriorWeights = .posteriorW,
+                posteriorPredTest = postPredTest,
                 call=match.call()
                 )
           }

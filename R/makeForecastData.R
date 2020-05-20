@@ -1,48 +1,41 @@
+#' @include forecastData.R
+NULL
+
 #' Build a ensemble forecasting data object
 #'
 #' This function uses the component model forecasts and dependent variable observations provided by the user to create an object of class \code{ForecastData}, which can then be used to calibrate and fit the ensemble. Individual slots of the \code{ForecastData} object can be accessed and changed using the \code{get} and \code{set} functions respectively. Missing predictions are allowed in the calibration set.
 #'
 #' @param .predCalibration A matrix with the number of rows being the number of observations in the calibration period and a column with calibration period predictions for each model.
 #' @param .predTest A vector with the number of rows being the number of observations in the test period and a column with test period predictions for each model.
-#' @param .outcomeCalibration A vector with the true values of the dependent variable for each observation in the calibration period.  
+#' @param .outcomeCalibration A vector with the true values of the dependent variable for each observation in the calibration period.
 #' @param .outcomeTest A vector with the true values of the dependent variable for each observation in the test period.
-#' @param .modelNames A vector of length p with the names of the component models.  
+#' @param .modelNames A vector of length p with the names of the component models.
 #' @param ... Additional arguments not implemented
 #'
-#' Additionally, the functions \code{show} and \code{print} can be used to display data objects of class 'ForecastData'.
-#' \code{show} displays only 1 digit and takes the following parameters:
-#' @param x A data object of class 'ForecastData'
-#' 
-#' \code{print} let's the use specify the number of digits printed and takes the arguments:
-#' @param object A data object of class 'ForecastData'
-#' @param digits User specified number of digits to be displayed.
-#'
-#' @return A data object of the class 'ForecastData' with the following slots: 
-#' \item{predCalibration}{An array containing the predictions of all component models for all observations in the calibration period.} 
+#' @return A data object of the class 'ForecastData' with the following slots:
+#' \item{predCalibration}{An array containing the predictions of all component models for all observations in the calibration period.}
 #' \item{predTest}{An array containing the predictions of all component models for all observations in the test period.}
-#' \item{outcomeCalibration}{A vector containing the true values of the dependent variable for all observations in the calibration period.} 
+#' \item{outcomeCalibration}{A vector containing the true values of the dependent variable for all observations in the calibration period.}
 #' \item{outcomeTest}{A vector containing the true values of the dependent variable for all observations in the test period.}
 #' \item{modelNames}{A character vector containing the names of all component models.  If no model names are specified, names will be assigned automatically.}
-#' @author  Michael D. Ward <\email{michael.d.ward@@duke.edu}> and Jacob M. Montgomery <\email{jacob.montgomery@@wustl.edu}> and Florian M. Hollenbach <\email{florian.hollenbach@@tamu.edu}>
 #'
 #'
-#' @references Montgomery, Jacob M., Florian M. Hollenbach and Michael D. Ward. (2015). Calibrating ensemble forecasting models with sparse data in the social sciences.   \emph{International Journal of Forecasting}. In Press.
-#' @references Montgomery, Jacob M., Florian M. Hollenbach and Michael D. Ward. (2012). Improving Predictions Using Ensemble Bayesian Model Averaging. \emph{Political Analysis}. \bold{20}: 271-291.
+#' @examples 
 #'
-#' @examples  data(calibrationSample)
-#' 
-#' \dontrun{data(testSample) 
+#' \dontrun{
+#' data(calibrationSample)
+#' data(testSample)
 #' this.ForecastData <- makeForecastData(.predCalibration=calibrationSample[,c("LMER", "SAE", "GLM")],
 #' .outcomeCalibration=calibrationSample[,"Insurgency"],.predTest=testSample[,c("LMER", "SAE", "GLM")],
 #' .outcomeTest=testSample[,"Insurgency"], .modelNames=c("LMER", "SAE", "GLM"))
-#' 
+#'
 #' ### to acces individual slots in the ForecastData object
 #' getPredCalibration(this.ForecastData)
 #' getOutcomeCalibration(this.ForecastData)
 #' getPredTest(this.ForecastData)
 #' getOutcomeTest(this.ForecastData)
 #' getModelNames(this.ForecastData)
-#' 
+#'
 #' ### to assign individual slots, use set functions
 #'
 #' setPredCalibration(this.ForecastData)<-calibrationSample[,c("LMER", "SAE", "GLM")]
@@ -52,8 +45,6 @@
 #' setModelNames(this.ForecastData)<-c("LMER", "SAE", "GLM")
 #'}
 #'
-#' @seealso ensembleBMA
-#' @aliases makeForecastData-method, ForecastData-method setModelNames<-, ForecastData-generic setModelNames<-, setOutcomeTest<-, setOutcomeCalibration, setPredTest, setPredCalibration, print-method, show-method
 #' @rdname makeForecastData
 #' @export
 setGeneric(name="makeForecastData",
@@ -67,7 +58,6 @@ setGeneric(name="makeForecastData",
            {standardGeneric("makeForecastData")}
            )
 
-
 #' @rdname makeForecastData
 #' @export
 setMethod(f="makeForecastData",
@@ -78,10 +68,10 @@ setMethod(f="makeForecastData",
             .outcomeTest,
             .modelNames)
           {
-            if(class(.predCalibration)=="data.frame"){.predCalibration <- as.matrix(.predCalibration)}
-            if(class(.predTest)=="data.frame"){.predTest <- as.matrix(.predTest)}
-            if(class(.predCalibration)=="matrix"){.predCalibration <- array(.predCalibration, dim=c(nrow(.predCalibration), ncol(.predCalibration), 1))}
-            if(class(.predTest)=="matrix"){.predTest <- array(.predTest, dim=c(nrow(.predTest), ncol(.predTest), 1))}
+            if(is(.predCalibration, "data.frame")){.predCalibration <- as.matrix(.predCalibration)}
+            if(is(.predTest, "data.frame")){.predTest <- as.matrix(.predTest)}
+            if(is(.predCalibration, "matrix")){.predCalibration <- array(.predCalibration, dim=c(nrow(.predCalibration), ncol(.predCalibration), 1))}
+            if(is(.predTest, "matrix")){.predTest <- array(.predTest, dim=c(nrow(.predTest), ncol(.predTest), 1))}
             if(length(.modelNames)<ncol(.predCalibration)){
               .modelNames <- paste("Model", 1:ncol(.predCalibration))
             }
@@ -93,24 +83,39 @@ setMethod(f="makeForecastData",
             }
             if(length(.outcomeCalibration>0)) {names(.outcomeCalibration) <- 1:length(.outcomeCalibration)}
             if(length(.outcomeTest>0))  {names(.outcomeTest) <- 1:length(.outcomeTest)}
-            
+
+            # Warning message for sparse outcomeCalibration data (less than 10% of observations are 0 or 1)
+            # First if statemenet will be T if outcome variable is all 0s and 1s, and check will run
+            if(length(unique(.outcomeCalibration)) == 2){
+              # Check to see if too sparse
+              if(min(table(.outcomeCalibration) / length(.outcomeCalibration)) < .1){
+              # Getting the percentage of observations less than 10 percent
+              minpct <- (round(min(table(.outcomeCalibration) / length(.outcomeCalibration)), 4) * 100)
+              # Getting which observation (0 or 1) is less than 10 percent
+              whichvalue <- names(which(table(.outcomeCalibration) / length(.outcomeCalibration)
+                            == min(table(.outcomeCalibration) / length(.outcomeCalibration))))
+              # The warning
+              warning(paste("Your calibration data are very unbalanced. Only ", minpct, " percent of your observations are ", whichvalue,
+                      "s. Be careful about convergence as well as interpretation of the results of this model.", sep=""),
+                      call.=FALSE)}
+            }
             return(new("ForecastData", predCalibration=.predCalibration, predTest=.predTest,
                        outcomeCalibration=.outcomeCalibration, outcomeTest=.outcomeTest, modelNames=.modelNames))
-            
+
           }
           )
 
-#' @rdname makeForecastData
+#' @rdname PrintShow
 #' @export
 setMethod(
 		f="print",
 		signature="ForecastData",
 		definition=function(x, digits=3, ...){
-			cat("* Prediction Calibration = \n"); 
+			cat("* Prediction Calibration = \n");
 			if(length(x@predCalibration)>0)
 			{print(x@predCalibration, na.print="", digits=digits);}
 			else{print("Nothing Here")}
-			cat("* Prediction Test = \n"); 
+			cat("* Prediction Test = \n");
 			if(length(x@predTest)>0)
 			{print(x@predTest, na.print="", digits=digits);}
 			else{print("Nothing Here")}
@@ -126,18 +131,18 @@ setMethod(
 			}
 			)
 
-#' @rdname makeForecastData
+#' @rdname PrintShow
 #' @export
 setMethod(
 		f="show",
 		signature="ForecastData",
 		definition=function(object){
                   if (length(object@predCalibration)==0) {
-			cat("* Prediction Calibration = \n"); 
+			cat("* Prediction Calibration = \n");
 			if(length(object@predCalibration)>0)
 			{print(object@predCalibration, na.print="", digits=1);}
 			else{print("Nothing Here")}
-			cat("* Prediction Test = \n"); 
+			cat("* Prediction Test = \n");
 			if(length(object@predTest)>0)
 			{print(object@predTest, na.print="", digits=1);}
 			else{print("Nothing Here")}
@@ -154,11 +159,11 @@ setMethod(
             else{
             nrowCal=min(10,nrow(object@predCalibration))
             nrowTest=min(10,nrow(object@predTest))
-            	cat("* Prediction Calibration = \n"); 
+            	cat("* Prediction Calibration = \n");
 				if(length(object@predCalibration)>0)
 				{print(object@predCalibration[1:nrowCal,1:ncol(object@predCalibration),1], na.print="", digits=2);}
 				else{print("Nothing Here")}
-				cat("* Prediction Test = \n"); 
+				cat("* Prediction Test = \n");
 				if(length(object@predTest)>0)
 				{print(object@predTest[1:nrowTest,1:ncol(object@predTest),1], na.print="", digits=2);}
 				else{print("Nothing Here")}
