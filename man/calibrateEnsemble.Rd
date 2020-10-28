@@ -17,8 +17,7 @@ calibrateEnsemble(
   W = rep(1/dim(.forecastData@predCalibration)[2],
     dim(.forecastData@predCalibration)[2]),
   const = 0,
-  modelPriors = rep(1/dim(.forecastData@predCalibration)[2],
-    dim(.forecastData@predCalibration)[2]),
+  modelPriors = rep(1, dim(.forecastData@predCalibration)[2]),
   iterations = 40000,
   burns = 20000,
   thinning = 20,
@@ -32,13 +31,12 @@ calibrateEnsemble(
   maxIter = 1e+06,
   model = "logit",
   method = "EM",
-  predType = "posteriorMedian",
+  predType = "posteriorMean",
   useModelParams = TRUE,
   W = rep(1/dim(.forecastData@predCalibration)[2],
     dim(.forecastData@predCalibration)[2]),
   const = 0,
-  modelPriors = rep(1/dim(.forecastData@predCalibration)[2],
-    dim(.forecastData@predCalibration)[2]),
+  modelPriors = rep(1, dim(.forecastData@predCalibration)[2]),
   iterations = 40000,
   burns = 20000,
   thinning = 20,
@@ -58,7 +56,7 @@ calibrateEnsemble(
 
 \item{method}{The estimation method used. It takes either an \code{EM} or \code{gibbs} as an argument.}
 
-\item{predType}{The prediction type used for the gibbs sampling EBMA model, user can choose either \code{posteriorMedian} (default) or \code{posteriorMean}. Model performance statistics are based on the posterior median or mean forecast. Note that the posterior median forecast is not equal to the forecast based on the median posterior weight.}
+\item{predType}{The prediction type used for the gibbs sampling EBMA model, user can choose either \code{posteriorMedian} or \code{posteriorMean} (default). Model performance statistics are based on the posterior median or mean forecast. Note that the posterior median forecast is not equal to the forecast based on the median posterior weight. EM predictions based on mean.}
 
 \item{useModelParams}{If "TRUE" individual model predictions are transformed based on logit models. If "FALSE" all models' parameters will be set to 0 and 1.}
 
@@ -66,7 +64,7 @@ calibrateEnsemble(
 
 \item{const}{User provided "wisdom of crowds" parameter, serves as minimum model weight for all models. Default = 0. Only used in model estimated using EM.}
 
-\item{modelPriors}{User provided vector of Dirichlet prior for each of the models. Only used in normal model estimated with gibbs sampling. Default prior is 1/n Models for all models.}
+\item{modelPriors}{User provided vector of Dirichlet prior for each of the models. Only used in normal model estimated with gibbs sampling. Default prior is 1 for each model.}
 
 \item{iterations}{The number of iterations for the Bayesian model. Default = 40000.}
 

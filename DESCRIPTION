@@ -2,21 +2,21 @@ Package: EBMAforecast
 Type: Package
 Title: Estimate Ensemble Bayesian Model Averaging Forecasts using Gibbs
         Sampling or EM-Algorithms
-Version: 1.0.0
-Date: 2020-05-20
+Version: 1.0.2
+Date: 2020-10-28
 Authors@R: c(person("Florian M.", "Hollenbach", email = "fhollenbach@tamu.edu",
                   role = c("aut", "cre"), comment = c(ORCID = "0000-0002-9599-556X")),
 	person("Jacob M.", "Montgomery", role = c("aut")),
 	person("Michael D.", "Ward", role = c("aut")))
 URL: <https://github.com/fhollenbach/EBMA/>
-Description: Create forecasts from multiple predictions using ensemble Bayesian model averaging (EBMA). EBMA models can be estimated using an expectation maximization (EM) algorithm or as fully Bayesian models via Gibbs sampling.
+Description: Create forecasts from multiple predictions using ensemble Bayesian model averaging (EBMA). EBMA models can be estimated using an expectation maximization (EM) algorithm or as fully Bayesian models via Gibbs sampling. The methods in this package are Montgomery, Hollenbach, and Ward (2015) <doi:10.1016/j.ijforecast.2014.08.001> and Montgomery, Hollenbach, and Ward (2012) <doi:10.1093/pan/mps002>.
 License: GPL (>= 2)
 Imports: Rcpp (>= 1.0.2), plyr, graphics, separationplot, Hmisc, abind,
         gtools, methods
 LinkingTo: Rcpp
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 Collate: 'EBMAforecast.R' 'forecastData.R' 'EBMApredict.R'
         'RcppExports.R' 'calibrateEnsemble.R' 'compareModels.R'
         'document-data.R' 'fitEnsembleLogit.R' 'fitEnsembleNormal.R'
@@ -24,11 +24,11 @@ Collate: 'EBMAforecast.R' 'forecastData.R' 'EBMApredict.R'
         'predictNormal.R' 'summary_plot.R' 'print_show.R'
         'utility-functions.R'
 NeedsCompilation: yes
-Packaged: 2020-05-20 11:01:56 UTC; florianhollenbach
+Packaged: 2020-10-28 14:44:33 UTC; florianhollenbach
 Author: Florian M. Hollenbach [aut, cre]
     (<https://orcid.org/0000-0002-9599-556X>),
   Jacob M. Montgomery [aut],
   Michael D. Ward [aut]
 Maintainer: Florian M. Hollenbach <fhollenbach@tamu.edu>
 Repository: CRAN
-Date/Publication: 2020-05-20 15:40:06 UTC
+Date/Publication: 2020-10-28 21:10:21 UTC

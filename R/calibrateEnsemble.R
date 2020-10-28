@@ -13,10 +13,10 @@ NULL
 #' @param maxIter The maximum number of iterations the EM algorithm will run before stopping automatically. The default is \code{maxIter=10000}.
 #' @param model The model type that should be used given the type of data that is being predicted (i.e., normal, binary, etc.).
 #' @param method The estimation method used. It takes either an \code{EM} or \code{gibbs} as an argument.
-#' @param predType The prediction type used for the gibbs sampling EBMA model, user can choose either \code{posteriorMedian} (default) or \code{posteriorMean}. Model performance statistics are based on the posterior median or mean forecast. Note that the posterior median forecast is not equal to the forecast based on the median posterior weight.
+#' @param predType The prediction type used for the gibbs sampling EBMA model, user can choose either \code{posteriorMedian} or \code{posteriorMean} (default). Model performance statistics are based on the posterior median or mean forecast. Note that the posterior median forecast is not equal to the forecast based on the median posterior weight. EM predictions based on mean. 
 #' @param W A vector or matrix of initial model weights. If unspecified, each model will receive weight equal to 1/number of Models
 #' @param const User provided "wisdom of crowds" parameter, serves as minimum model weight for all models. Default = 0. Only used in model estimated using EM.
-#' @param modelPriors User provided vector of Dirichlet prior for each of the models. Only used in normal model estimated with gibbs sampling. Default prior is 1/n Models for all models. 
+#' @param modelPriors User provided vector of Dirichlet prior for each of the models. Only used in normal model estimated with gibbs sampling. Default prior is 1 for each model. 
 #' @param iterations The number of iterations for the Bayesian model. Default = 40000.
 #' @param burns The burn in for the Gibbs sampler. Default = 20000.
 #' @param thinning How much the Gibbs sampler is thinned. Default = 20.
@@ -85,7 +85,7 @@ setGeneric(name="calibrateEnsemble",
              useModelParams = TRUE,
              W = rep(1/dim(.forecastData@predCalibration)[2],dim(.forecastData@predCalibration)[2]),
              const = 0,
-             modelPriors = rep(1/dim(.forecastData@predCalibration)[2],dim(.forecastData@predCalibration)[2]),
+             modelPriors = rep(1,dim(.forecastData@predCalibration)[2]),
              iterations = 40000,
              burns = 20000,
              thinning = 20,
@@ -105,11 +105,11 @@ setMethod(f="calibrateEnsemble",
             maxIter=1e6,
             model="logit",
             method="EM",
-            predType = "posteriorMedian",
+            predType = "posteriorMean",
             useModelParams = TRUE,
             W = rep(1/dim(.forecastData@predCalibration)[2],dim(.forecastData@predCalibration)[2]),
             const = 0,
-            modelPriors = rep(1/dim(.forecastData@predCalibration)[2],dim(.forecastData@predCalibration)[2]),
+            modelPriors = rep(1,dim(.forecastData@predCalibration)[2]),
             iterations = 40000,
             burns = 20000,
             thinning = 20,
