@@ -2,9 +2,9 @@ Package: EBMAforecast
 Type: Package
 Title: Estimate Ensemble Bayesian Model Averaging Forecasts using Gibbs
         Sampling or EM-Algorithms
-Version: 1.0.2
-Date: 2020-10-28
-Authors@R: c(person("Florian M.", "Hollenbach", email = "fhollenbach@tamu.edu",
+Version: 1.0.3
+Date: 2022-10-12
+Authors@R: c(person("Florian M.", "Hollenbach", email = "fho.egb@cbs.dk",
                   role = c("aut", "cre"), comment = c(ORCID = "0000-0002-9599-556X")),
 	person("Jacob M.", "Montgomery", role = c("aut")),
 	person("Michael D.", "Ward", role = c("aut")))
@@ -16,7 +16,7 @@ Imports: Rcpp (>= 1.0.2), plyr, graphics, separationplot, Hmisc, abind,
 LinkingTo: Rcpp
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.1
 Collate: 'EBMAforecast.R' 'forecastData.R' 'EBMApredict.R'
         'RcppExports.R' 'calibrateEnsemble.R' 'compareModels.R'
         'document-data.R' 'fitEnsembleLogit.R' 'fitEnsembleNormal.R'
@@ -24,11 +24,11 @@ Collate: 'EBMAforecast.R' 'forecastData.R' 'EBMApredict.R'
         'predictNormal.R' 'summary_plot.R' 'print_show.R'
         'utility-functions.R'
 NeedsCompilation: yes
-Packaged: 2020-10-28 14:44:33 UTC; florianhollenbach
+Packaged: 2022-10-13 04:02:04 UTC; florianhollenbach
 Author: Florian M. Hollenbach [aut, cre]
     (<https://orcid.org/0000-0002-9599-556X>),
   Jacob M. Montgomery [aut],
   Michael D. Ward [aut]
-Maintainer: Florian M. Hollenbach <fhollenbach@tamu.edu>
+Maintainer: Florian M. Hollenbach <fho.egb@cbs.dk>
 Repository: CRAN
-Date/Publication: 2020-10-28 21:10:21 UTC
+Date/Publication: 2022-10-13 08:32:42 UTC
