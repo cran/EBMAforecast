@@ -1,6 +1,6 @@
-01eba67da8657e093db1558a486785d2 *DESCRIPTION
-d6128b2fefbfa476e30293b772a59251 *NAMESPACE
-ce0ec7d8c9c09e03ea273435e81b7d2a *R/EBMAforecast.R
+f4322f5b893e499ba3ad47c4afa6e619 *DESCRIPTION
+96846fa69f9932d6fbb7663b10ae3aa1 *NAMESPACE
+d3a04dc144c3b2dcbe7e210833303cad *R/EBMAforecast-package.R
 49ae335c23d478f98ae704e6568457bc *R/EBMApredict.R
 fd7d04121eb2d31aff1dfbfe8e3a324d *R/RcppExports.R
 8c328b866b1669540df0c64f81625554 *R/calibrateEnsemble.R
@@ -16,13 +16,14 @@ eb19255fcfbda8c81d6374a36d78cb15 *R/makeForecastData.R
 b0a5a92efa4362529f5507a027f657ed *R/print_show.R
 61aba663497e0e06154190067988f575 *R/summary_plot.R
 b678b1ecb8f255430caa28f0f205ffca *R/utility-functions.R
+7080893e02c49cd296d4424b9be55069 *build/partial.rdb
 53c7aef4e1807181975615399a1e987e *data/calibrationSample.rda
 57d89858bdd343b26b633b01a9f9b21b *data/presidentialForecast.rda
 5e7897327f26c283694ac2794da20221 *data/testSample.rda
 49903fc02f5223d48bebfd8228affc64 *demo/00Index
 f1b8e6e368da4c41d8b0e9309448f080 *demo/EBMAforecast.R
 8a215b21c6b05ebb28562f3c3be23089 *demo/presForecast.R
-054b22e63d0e445631c3feefe94cd59f *man/EBMAforecast.Rd
+494553ac5bad6bff00c1cb79e7ecfd2c *man/EBMAforecast-package.Rd
 2ee0a4e55d3dc6cdc6dd0290e87db682 *man/EBMApredict.Rd
 2fbe16a6a5af63b7dd9b7f6863105886 *man/ForecastData.Rd
 f61aef4cc3e2a489768c061e0a322e3b *man/InsurgencyPredictions.Rd
@@ -35,5 +36,5 @@ a1e79a22db9227e3e7786ca509d920ef *man/compareModels.Rd
 0dfa9626fcc6a6f6a376edbb8477841d *man/setFunctions.Rd
 9a6cce5ad665584eec6b5d5803228b61 *src/RcppExports.cpp
 4636391bf8080ec1e9fcf0b19435d40e *src/Samplers.cpp
-56bad0bf1a991baa41844b9cc2877e12 *tests/testthat/Rplots.pdf
+21195be66f41c78354a0f1c28434408e *tests/testthat/Rplots.pdf
 2b7bf2b37b952cbdbcfa39b0dccbc3e5 *tests/testthat/testthat.R
