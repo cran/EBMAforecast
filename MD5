@@ -1,4 +1,4 @@
-f4322f5b893e499ba3ad47c4afa6e619 *DESCRIPTION
+9a4c195e32feab242eeea10040ae58ac *DESCRIPTION
 96846fa69f9932d6fbb7663b10ae3aa1 *NAMESPACE
 d3a04dc144c3b2dcbe7e210833303cad *R/EBMAforecast-package.R
 49ae335c23d478f98ae704e6568457bc *R/EBMApredict.R
@@ -6,8 +6,8 @@ fd7d04121eb2d31aff1dfbfe8e3a324d *R/RcppExports.R
 8c328b866b1669540df0c64f81625554 *R/calibrateEnsemble.R
 dbdd7ca82b8b3e72d6e42e5b56047247 *R/compareModels.R
 dd82fbc2f790eaa6a6f8196a0fa2279a *R/document-data.R
-5c87ab39e546509d940e0b81fb9cb63a *R/fitEnsembleLogit.R
-b42c973eda9a069f8a503317238886f9 *R/fitEnsembleNormal.R
+70af835b6d4641ec1ed99d580e9ea950 *R/fitEnsembleLogit.R
+bed381e685eafa8db262a73f63b4cf51 *R/fitEnsembleNormal.R
 476e6bea96120dc8d17f2f9f9a30c5a7 *R/forecastData.R
 cc641e88030a9547974381e0f8fd460d *R/global.R
 eb19255fcfbda8c81d6374a36d78cb15 *R/makeForecastData.R
@@ -16,7 +16,7 @@ eb19255fcfbda8c81d6374a36d78cb15 *R/makeForecastData.R
 b0a5a92efa4362529f5507a027f657ed *R/print_show.R
 61aba663497e0e06154190067988f575 *R/summary_plot.R
 b678b1ecb8f255430caa28f0f205ffca *R/utility-functions.R
-7080893e02c49cd296d4424b9be55069 *build/partial.rdb
+8faf250d78a120ba4c7ea2186efddd24 *build/partial.rdb
 53c7aef4e1807181975615399a1e987e *data/calibrationSample.rda
 57d89858bdd343b26b633b01a9f9b21b *data/presidentialForecast.rda
 5e7897327f26c283694ac2794da20221 *data/testSample.rda
@@ -36,5 +36,5 @@ a1e79a22db9227e3e7786ca509d920ef *man/compareModels.Rd
 0dfa9626fcc6a6f6a376edbb8477841d *man/setFunctions.Rd
 9a6cce5ad665584eec6b5d5803228b61 *src/RcppExports.cpp
 4636391bf8080ec1e9fcf0b19435d40e *src/Samplers.cpp
-21195be66f41c78354a0f1c28434408e *tests/testthat/Rplots.pdf
+daffd7101ca5d6c805c95b48a37f6a67 *tests/testthat/Rplots.pdf
 2b7bf2b37b952cbdbcfa39b0dccbc3e5 *tests/testthat/testthat.R
